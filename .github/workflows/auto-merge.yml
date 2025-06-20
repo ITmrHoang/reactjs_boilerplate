@@ -1,0 +1,39 @@
+name: Auto Merge to Develop
+
+on:
+  push:
+    branches-ignore:
+      - develop
+      - main
+      - staging
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Git
+        run: |
+          git init
+          git remote add origin https://github.com/${{ github.repository }}.git
+          git fetch --all
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global credential.helper store
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          echo "https://${{ secrets.GITHUB_TOKEN }}:@github.com" > ~/.git-credentials
+
+      - name: Checkout develop branch
+        run: |
+          git checkout -b develop origin/develop
+
+      - name: Merge current branch into develop
+        run: |
+          git merge origin/${{ github.ref_name }}
+
+      - name: Push changes to develop
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}"
+          git push origin develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
