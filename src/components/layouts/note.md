@@ -1,0 +1,1 @@
+có thể dùng tên template cho folder để theo chuẩn atoms

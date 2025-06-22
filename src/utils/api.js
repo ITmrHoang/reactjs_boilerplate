@@ -63,14 +63,16 @@ let refreshTokenPromise = null;
 //TODO await have backend  Interceptor  handle response
 
 api.interceptors.response.use(
+   // 1. Hàm cho các response thành công (status 2xx)
   (response) => {
     return response.data;
   },
   (error) => {
     const originalRequest = error.config;
+    const status = error?.response?.status
     console.warn('error api', error);
     if (
-      error?.response?.status === 401 &&
+      status === 401 &&
       booleanRefresh(originalRequest._retry)
     ) {
       const refreshToken = getAuth();
@@ -111,13 +113,12 @@ api.interceptors.response.use(
       });
     }
 
-    // if (error.response.status === 403) {
-    //   localStorage.removeItem('accessToken');
-    //   localStorage.removeItem('refreshToken');
-    // }
+
+      if (status === 403) {
+        // Xử lý lỗi Forbidden
+        // Có thể hiển thị một thông báo chung
+      }
     alert(
-      error?.response?.data?.msg ??
-        error?.response?.data?.message ??
         'Have some errors, please try again',
     );
     return Promise.reject(error);
