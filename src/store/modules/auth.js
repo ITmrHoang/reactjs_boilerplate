@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import api from 'utils/api';
-import { LOGIN, LOGOUT, REFRESH, REGISTER, USER_MENU } from 'utils/url';
+import api from '@/utils/api';
+import { LOGIN, LOGOUT, REFRESH, REGISTER } from '@/utils/url';
 
 const NAME = 'auth'
 // TODO register

@@ -1,0 +1,7 @@
+/* vite use css like module  will create LocalScope class giúp các class không bị trùng với class của component khác*/
+/* ex:
+* postList.module.css
+* .card { background: red}
+* import styles from './postList.module.css'; # js sẽ biến đổi file css tạo ra map tên gốc và tên được tạo ra
+* html:  <div className={styles.card}>
+*/

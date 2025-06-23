@@ -7,9 +7,10 @@ import {
   getAuth,
   setAuthInfo,
   cleanAuthInfo,
-} from 'store/modules/auth';
+} from '@/store/modules/auth';
+import { BASE_URL, RETRY_API } from './config';
 export const api = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: BASE_URL,
 });
 
 const excludeRetry = [LOGIN, REFRESH, REGISTER];
@@ -21,7 +22,7 @@ api.interceptors.request.use(
     const token = getAccessToken();
     const grantType = getGrantType();
     if (!excludeRetry.includes(config.url)) {
-      config._retry ??= 2;
+      config._retry ??= RETRY_API;
     }
     if (token && ![LOGIN, REGISTER].includes(config.url)) {
       //update login and register dont send token because token dont remove when expired date will error
@@ -124,4 +125,6 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+
 export default api;
